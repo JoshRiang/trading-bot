@@ -9,4 +9,5 @@ htmlcov/
 *.log
 .DS_Store
 .idea/
-.vscode/
+.vscode/.venv/
+.pytest_cache/
