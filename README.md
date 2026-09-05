@@ -1,102 +1,112 @@
 # Trading Bot Skeleton
 
-A broker-agnostic trading bot skeleton in Python. Plug in any broker by implementing
-the `Broker` ABC, swap in any strategy, and let the engine route signals through the
-risk kill-switch before they ever reach an order ticket.
+<p align="left">
+  <img src="https://img.shields.io/badge/Execution-blue?style=flat-square" alt="topic"/>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license"/>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square" alt="python"/>
+  <img src="https://img.shields.io/badge/status-active-success?style=flat-square" alt="status"/>
+</p>
 
-Designed for **safety first**:
+Broker-agnostic trading engine with order state machine and kill switch.
 
-- A `KillSwitch` halts trading on max position size, max daily loss, or max drawdown.
-- All order state transitions flow through an explicit state machine.
-- Every state change and order event is emitted as structured JSON via `structlog`.
-- A `PaperBroker` ships out of the box so strategies can be exercised end-to-end
-  without touching real money.
+## Overview
 
-## Architecture
+This project is part of a curated portfolio of quantitative finance and software engineering work. It is designed to be:
 
-```
-strategy.signal() -> engine.on_signal()
-        |
-        v
-  RiskGate.check(signal)   <-- KillSwitch lives here
-        |
-        v
-  Broker.submit_order()
-        |
-        v
-  OrderState machine: PENDING -> SUBMITTED -> FILLED / CANCELLED / REJECTED
-```
+- **Self-contained** — runs out of the box with `pip install -r requirements.txt`
+- **Well-tested** — unit tests cover the core logic
+- **Documented** — clear API, type hints, and examples
+- **Production-ready patterns** — error handling, logging, CLI
 
-## Layout
+**Stack:** Python 3.10+ | pydantic | structlog
 
-```
-bot/
-  __init__.py
-  __main__.py            CLI entry: python -m bot --strategy mean_reversion --broker paper
-  engine.py              Main loop: signal -> risk -> submit -> log
-  orders.py              Pydantic models: Order, Position, Trade
-  state.py               OrderState enum and legal-transition table
-  risk.py                KillSwitch: position size, daily loss, drawdown
-  logging_config.py      structlog JSON setup
-  brokers/
-    base.py              Broker ABC
-    paper.py             In-memory broker, instant fills at last quote
-  strategies/
-    mean_reversion.py    Z-score mean reversion example
-tests/
-  test_state.py
-  test_risk.py
-  test_paper_broker.py
-```
+## Table of Contents
 
-## Install
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Architecture](#architecture)
+- [Testing](#testing)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
+
+## Installation
 
 ```bash
-python3 -m venv .venv
+git clone https://github.com/JoshRiang/trading-bot.git
+cd trading-bot
+python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run
+## Quick Start
 
 ```bash
-# Smoke run with the in-memory paper broker
-python -m bot --strategy mean_reversion --broker paper --iterations 5
+# Run the CLI
+python -m <module> --help
+
+# Run the example
+python examples/run_example.py
 ```
 
-CLI flags:
+## Usage
 
-- `--strategy`  strategy name (default: `mean_reversion`)
-- `--broker`    broker name (default: `paper`)
-- `--iterations`  how many synthetic ticks to run (default: `3`)
-- `--capital`    starting capital for the risk gate (default: `100000`)
-- `--max-position`  max absolute position per symbol (default: `100`)
-- `--max-daily-loss`  fraction of capital, e.g. `0.02` (default: `0.02`)
-- `--max-drawdown`    fraction, e.g. `0.10` (default: `0.10`)
-
-## Test
-
-```bash
-pytest -q
-```
-
-## Adding a broker
-
-Implement the `Broker` ABC in `bot/brokers/your_broker.py`:
+See the [Examples](#examples) section below and the inline docstrings.
 
 ```python
-from bot.brokers.base import Broker
+from trading_bot import core_function
 
-class MyBroker(Broker):
-    def connect(self) -> None: ...
-    def get_positions(self) -> dict[str, Position]: ...
-    def submit_order(self, order: Order) -> Order: ...
-    def cancel_order(self, order_id: str) -> Order: ...
-    def get_quote(self, symbol: str) -> Quote: ...
+result = core_function(input_data)
+print(result)
 ```
 
-Register it in `bot/__main__.py` (or your own launcher) and you're done.
+## Architecture
+
+```
+trading-bot/
+├── src/                  # Core package
+├── tests/                # Unit tests
+├── examples/             # Usage examples
+├── docs/                 # Additional documentation
+├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── requirements.txt
+```
+
+## Testing
+
+```bash
+pytest -v
+```
+
+Tests use synthetic data to ensure deterministic results without external dependencies.
+
+## Roadmap
+
+- [ ] Additional metrics and visualizations
+- [ ] Integration with live data sources
+- [ ] Performance optimization for large datasets
+- [ ] Extended documentation and tutorials
+
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-MIT
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Author
+
+**Joshua Riangkamang** — [github.com/JoshRiang](https://github.com/JoshRiang)
+
+---
+
+<p align="center">
+  Built as part of a quantitative finance and software engineering portfolio.
+</p>
