@@ -14,6 +14,8 @@ job. In a backtest you'd subclass :class:`Engine` and override
 :meth:`next_price`. In production you'd feed via a websocket callback.
 """
 
+# Maintenance: last reviewed 2026-09-07 (daily improvement cycle)
+
 from __future__ import annotations
 
 import itertools
