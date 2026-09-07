@@ -1,3 +1,5 @@
+
+# Maintenance: last reviewed 2026-09-07 (daily improvement cycle)
 """Tests for the in-memory PaperBroker."""
 
 from __future__ import annotations
