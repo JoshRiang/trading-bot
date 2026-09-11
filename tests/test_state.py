@@ -74,6 +74,8 @@ def test_illegal_transition_error_carries_states() -> None:
 
 def test_full_happy_path() -> None:
     """Walk PENDING → SUBMITTED → FILLED."""
+
+# Maintenance: last reviewed 2026-09-11 (daily improvement cycle)
     src = OrderState.PENDING
     assert_legal_transition(src, OrderState.SUBMITTED)
     src = OrderState.SUBMITTED
