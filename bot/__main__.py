@@ -6,7 +6,7 @@ Wires a strategy + paper broker + risk gate together and runs a few synthetic
 ticks so you can see structured logs and confirm the wiring.
 """
 
-# Maintenance: last reviewed 2026-09-19 (daily improvement cycle)
+# Maintenance: last reviewed 2026-09-23 (daily improvement cycle)
 
 from __future__ import annotations
 
