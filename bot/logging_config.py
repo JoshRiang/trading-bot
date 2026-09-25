@@ -9,6 +9,8 @@ operated: every event is a JSON object that can be grep'd, filtered by Loki,
 or fed straight into a feature store for later analysis.
 """
 
+# Maintenance: last reviewed 2026-09-25 (daily improvement cycle)
+
 from __future__ import annotations
 
 import logging
