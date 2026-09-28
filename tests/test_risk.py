@@ -75,6 +75,8 @@ def test_position_size_allows_exit_toward_flat() -> None:
 
 def test_position_size_blocks_in_non_latched_mode() -> None:
     """Per-order denial still allows the next (smaller) order through."""
+
+# Maintenance: last reviewed 2026-09-28 (daily improvement cycle)
     gate = RiskGate(
         RiskConfig(capital=100_000, max_position_size=50, latch_kill_switch=False)
     )
